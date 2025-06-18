@@ -1,0 +1,366 @@
+<UserControl
+    x:Class="RecipeApp.Views.AddRecipeView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+    xmlns:material="using:Material.Icons.Avalonia"
+    xmlns:views="using:RecipeApp.Views"
+    xmlns:vm="using:RecipeApp.ViewModels"
+    x:DataType="vm:AddRecipeViewModel"
+    Design.Height="600"
+    Design.Width="1130">
+
+    <Grid Background="{DynamicResource BackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  Header  -->
+        <Border
+            Grid.Row="0"
+            Height="80"
+            VerticalAlignment="Top"
+            BoxShadow="0 0 5 black">
+
+            <Grid Margin="10" ColumnDefinitions="*,*">
+
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Text="{Binding L[AddRecipeTitle]}" />
+
+                <!--  Action Buttons  -->
+                <Grid
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    ColumnDefinitions="Auto,Auto">
+                    <Button
+                        Height="50"
+                        Margin="0,0,10,0"
+                        BorderBrush="{DynamicResource OkColor}"
+                        Command="{Binding AddRecipeCommand}">
+
+                        <Grid ColumnDefinitions="Auto,*">
+                            <material:MaterialIcon
+                                Width="25"
+                                Height="25"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Kind="Floppy" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{Binding L[SaveButton]}" />
+                        </Grid>
+
+                    </Button>
+                    <Button
+                        Grid.Column="1"
+                        Height="50"
+                        BorderBrush="{DynamicResource ErrorColor}"
+                        Command="{Binding CancelRecipeCommand}">
+
+                        <Grid ColumnDefinitions="Auto,*">
+                            <material:MaterialIcon
+                                Width="25"
+                                Height="25"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Kind="TrashCanOutline" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{Binding L[DiscardButton]}" />
+                        </Grid>
+
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!--  AddImagePopup  -->
+        <Popup
+            Grid.Row="1"
+            ClipToBounds="True"
+            IsOpen="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).IsPopupOpen}"
+            Placement="Center"
+            WindowManagerAddShadowHint="True">
+            <Border
+                Width="400"
+                Height="400"
+                Background="{DynamicResource PrimaryColor}"
+                CornerRadius="10">
+
+                <Grid Margin="10" RowDefinitions="*,Auto,Auto">
+
+                    <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border>
+                            <StackPanel Spacing="10">
+                                <material:MaterialIcon
+                                    Width="100"
+                                    Height="100"
+                                    Kind="ImageOutline" />
+                                <TextBlock FontSize="18" Text="Click here to upload your image" />
+                            </StackPanel>
+                        </Border>
+                    </Button>
+
+                    <TextBox
+                        Grid.Row="1"
+                        Height="60"
+                        Margin="0,10,0,10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        Watermark="Or paste your image url here..." />
+
+                    <StackPanel
+                        Grid.Row="2"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="5">
+                        <Button
+                            Width="50"
+                            Height="40"
+                            BorderBrush="{DynamicResource OkColor}"
+                            Command="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).UploadImageCommand}"
+                            Content="Ok" />
+                        <Button
+                            Height="40"
+                            BorderBrush="{DynamicResource ErrorColor}"
+                            Command="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).CancelUploadCommand}"
+                            Content="{Binding L[CancelButton]}" />
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+        </Popup>
+
+        <!--  Preview Card  -->
+        <Border
+            Grid.Row="1"
+            Height="240"
+            Margin="10"
+            HorizontalAlignment="Stretch"
+            ClipToBounds="True"
+            CornerRadius="10">
+            <Grid ColumnDefinitions="Auto,*">
+				
+                <Image
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    asyncImageLoader:ImageLoader.Source="{Binding RecipeDraft.ImagePath}"
+                    Stretch="Uniform" />
+
+                <Button
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="Transparent"
+                    Command="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).UploadImageCommand}" />
+
+
+                <Grid Grid.Column="1" Margin="10,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBox
+                        Grid.Row="0"
+                        VerticalContentAlignment="Center"
+                        FontSize="24"
+                        FontWeight="Bold"
+                        Text="{Binding RecipeDraft.Name}"
+                        Watermark="{Binding L[RecipeNameWatermark]}" />
+                    <TextBox
+                        Grid.Row="1"
+                        Margin="0,5,0,0"
+                        VerticalContentAlignment="Center"
+                        FontSize="20"
+                        MaxLines="3"
+                        Opacity="0.8"
+                        Text="{Binding RecipeDraft.Description}"
+                        TextWrapping="Wrap"
+                        Watermark="{Binding L[DescriptionWatermark]}" />
+
+                    <TextBox
+                        Grid.Row="2"
+                        Margin="0,5,0,0"
+                        VerticalContentAlignment="Center"
+                        FontSize="18"
+                        Opacity="0.7"
+                        Text="{Binding RecipeDraft.RequiredTime}"
+                        Watermark="{Binding L[RequiredTimeWatermark]}">
+                        <TextBox.InnerLeftContent>
+                            <material:MaterialIcon
+                                Width="25"
+                                Height="25"
+                                Margin="10,10,0,10"
+                                Kind="ClockOutline" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="600" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Making Tab  -->
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                FontSize="24"
+                FontWeight="Bold"
+                Text="{Binding L[MakingSectionTitle]}" />
+
+            <Border
+                Grid.Row="1"
+                Background="{DynamicResource BackgroundColorShadow}"
+                CornerRadius="10">
+                <ScrollViewer>
+                    <TextBox
+                        Padding="10"
+                        AcceptsReturn="True"
+                        FontSize="20"
+                        Text="{Binding RecipeDraft.Making}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
+            </Border>
+
+            <!--  Ingredients  -->
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="30,0,0,0"
+                FontSize="24"
+                FontWeight="Bold"
+                Text="{Binding L[IngredientsSectionTitle]}" />
+
+            <Grid
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="30,0,0,0"
+                RowDefinitions="Auto,*,Auto">
+
+                <StackPanel
+                    Grid.Row="0"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <TextBox
+                        Width="180"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding IngredientDraft.Name}"
+                        Watermark="{Binding L[IngredientWatermark]}" />
+                    <TextBox
+                        Width="100"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding IngredientDraft.Amount}"
+                        Watermark="{Binding L[QuantityWatermark]}" />
+                    <TextBox
+                        Width="100"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        Text="{Binding IngredientDraft.Unit}"
+                        Watermark="{Binding L[UnitWatermark]}" />
+                    <Button
+                        Width="80"
+                        Height="40"
+                        BorderBrush="{DynamicResource TertiaryColor}"
+                        Command="{Binding AddIngredientCommand}">
+
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Kind="Add" />
+
+                    </Button>
+                </StackPanel>
+
+                <Border Grid.Row="1" Margin="0,10,0,10">
+                    <ScrollViewer>
+                        <ItemsControl
+                            x:Name="RecipeList"
+                            Background="Transparent"
+                            ItemsSource="{Binding RecipeDraft.Ingredients}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" ColumnDefinitions="Auto,*">
+                                        <StackPanel Orientation="Horizontal" Spacing="5">
+                                            <material:MaterialIcon
+                                                Width="10"
+                                                Height="5"
+                                                Kind="Circle" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                FontSize="18"
+                                                Text="{Binding Amount}" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                FontSize="18"
+                                                Text="{Binding Unit}" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                FontSize="18"
+                                                Foreground="{DynamicResource TertiaryColor}"
+                                                Text="{Binding Name}" />
+                                        </StackPanel>
+
+                                        <Button
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Background="Transparent"
+                                            Command="{Binding #RecipeList((vm:AddRecipeViewModel)DataContext).RemoveIngredientCommand}"
+                                            CommandParameter="{Binding}">
+
+                                            <material:MaterialIcon
+                                                Width="25"
+                                                Height="25"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Foreground="{DynamicResource ErrorColor}"
+                                                Kind="Remove" />
+
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
