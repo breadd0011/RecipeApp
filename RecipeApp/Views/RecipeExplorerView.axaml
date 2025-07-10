@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+    xmlns:converters="clr-namespace:RecipeApp.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
@@ -20,6 +21,10 @@
             <Setter Property="IsEnabled" Value="False" />
         </Style>
     </UserControl.Styles>
+
+    <UserControl.Resources>
+        <converters:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmapConverter" />
+    </UserControl.Resources>
 
     <Grid Background="{DynamicResource BackgroundColor}" Classes.IsPopupOpen="{Binding IsPopupOpen}">
         <Grid.RowDefinitions>
@@ -148,7 +153,7 @@
                                     <!--  Recipe Image  -->
                                     <Image
                                         Grid.Row="0"
-                                        asyncImageLoader:ImageLoader.Source="{Binding ImagePath}"
+                                        Source="{Binding ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
                                         Stretch="UniformToFill" />
 
                                     <!--  Recipe Info  -->

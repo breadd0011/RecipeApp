@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Remove="Assets\Images\food_placeholder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AvaloniaXaml Remove="Styles\Themes\DarkTheme.axaml" />
     <AvaloniaXaml Remove="Styles\Themes\LightTheme.axaml" />
   </ItemGroup>
@@ -24,6 +28,10 @@
     <AvaloniaResource Include="Styles\Themes\LightTheme.axaml">
       <SubType>Designer</SubType>
     </AvaloniaResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Images\food_placeholder.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,9 +51,5 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
     <PackageReference Include="Xaml.Behaviors.Interactions" Version="11.3.0.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\" />
   </ItemGroup>
 </Project>

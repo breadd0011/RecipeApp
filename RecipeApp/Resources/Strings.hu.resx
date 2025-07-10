@@ -195,6 +195,9 @@
   <data name="SearchWatermark" xml:space="preserve">
     <value>Keresés...</value>
   </data>
+  <data name="SelectImageButton" xml:space="preserve">
+    <value>Kattints ide a kép kiválasztásához</value>
+  </data>
   <data name="SettingsButton" xml:space="preserve">
     <value>Beállítások</value>
   </data>

@@ -13,6 +13,7 @@ namespace RecipeApp.Services
         public RecipeDataService(RecipeDbContext context)
         {
             _context = context;
+            _context.Database.EnsureCreated();
         }
 
         public ObservableCollection<Recipe> GetAllRecipes()

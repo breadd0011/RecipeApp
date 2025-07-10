@@ -8,7 +8,9 @@ namespace RecipeApp.ViewModels
     {
         [ObservableProperty] private Recipe _currentRecipe;
         public ILocalizationService L { get; }
-        public OpenedRecipeViewModel(Recipe recipe, ILocalizationService localizationService)
+        public OpenedRecipeViewModel(
+            Recipe recipe,
+            ILocalizationService localizationService)
         {
             _currentRecipe = recipe;
             L = localizationService;

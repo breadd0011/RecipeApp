@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeApp.Data;
 using RecipeApp.Services;
+using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Search;
@@ -41,6 +42,7 @@ namespace RecipeApp
             collection.AddSingleton<IRecipeDataService, RecipeDataService>();
             collection.AddSingleton<INavigationService, NavigationService>();
             collection.AddSingleton<ISearchService, SearchService>();
+            collection.AddSingleton<IFileService, FileService>();
 
             collection.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
 
@@ -67,6 +69,9 @@ namespace RecipeApp
                 {
                     DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>()
                 };
+
+                var fileService = serviceProvider.GetRequiredService<IFileService>();
+                fileService.Initialize(desktop.MainWindow);
             }
 
             base.OnFrameworkInitializationCompleted();

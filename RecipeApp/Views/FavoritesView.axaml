@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:asd="clr-namespace:"
     xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+    xmlns:converters="clr-namespace:RecipeApp.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
     xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
@@ -14,6 +15,11 @@
     x:DataType="vm:FavoritesViewModel"
     Design.Height="600"
     Design.Width="800">
+
+
+    <UserControl.Resources>
+        <converters:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmapConverter" />
+    </UserControl.Resources>
 
     <Grid Background="{DynamicResource BackgroundColor}">
         <Grid.RowDefinitions>
@@ -70,7 +76,7 @@
                                     <!--  Recipe Image  -->
                                     <Image
                                         Grid.Row="0"
-                                        Source="/Assets/Images/food_placeholder.png"
+                                        Source="{Binding ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
                                         Stretch="UniformToFill" />
 
                                     <!--  Recipe Info  -->

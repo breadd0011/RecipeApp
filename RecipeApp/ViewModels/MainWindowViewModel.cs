@@ -25,7 +25,10 @@ namespace RecipeApp.ViewModels
         private readonly IConfiguration _config;
         public ILocalizationService L { get; }
 
-        public MainWindowViewModel(INavigationService navService, ILocalizationService localizationService, ISearchService searchService)
+        public MainWindowViewModel(
+            INavigationService navService,
+            ILocalizationService localizationService,
+            ISearchService searchService)
         {
             _navService = navService;
             L = localizationService;

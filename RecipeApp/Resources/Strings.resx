@@ -195,6 +195,9 @@
   <data name="SearchWatermark" xml:space="preserve">
     <value>Search...</value>
   </data>
+  <data name="SelectImageButton" xml:space="preserve">
+    <value>Click here to select your image</value>
+  </data>
   <data name="SettingsButton" xml:space="preserve">
     <value>Settings</value>
   </data>

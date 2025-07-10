@@ -14,9 +14,11 @@ namespace RecipeApp.ViewModels
         [ObservableProperty] private ObservableCollection<Recipe> _recipes = new();
 
         private readonly IRecipeDataService _recipeDataService;
-
         public ILocalizationService L { get; }
-        public FavoritesViewModel(INavigationService navService, IRecipeDataService recipeDataService, ILocalizationService localizationService)
+        public FavoritesViewModel(
+            INavigationService navService,
+            IRecipeDataService recipeDataService,
+            ILocalizationService localizationService)
         {
             _navService = navService;
             _recipeDataService = recipeDataService;
