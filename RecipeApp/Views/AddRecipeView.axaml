@@ -3,12 +3,17 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+    xmlns:converters="clr-namespace:RecipeApp.Converters"
     xmlns:material="using:Material.Icons.Avalonia"
     xmlns:views="using:RecipeApp.Views"
     xmlns:vm="using:RecipeApp.ViewModels"
     x:DataType="vm:AddRecipeViewModel"
     Design.Height="600"
     Design.Width="1130">
+
+    <UserControl.Resources>
+        <converters:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmapConverter" />
+    </UserControl.Resources>
 
     <Grid Background="{DynamicResource BackgroundColor}">
         <Grid.RowDefinitions>
@@ -89,65 +94,6 @@
             </Grid>
         </Border>
 
-        <!--  AddImagePopup  -->
-        <Popup
-            Grid.Row="1"
-            ClipToBounds="True"
-            IsOpen="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).IsPopupOpen}"
-            Placement="Center"
-            WindowManagerAddShadowHint="True">
-            <Border
-                Width="400"
-                Height="400"
-                Background="{DynamicResource PrimaryColor}"
-                CornerRadius="10">
-
-                <Grid Margin="10" RowDefinitions="*,Auto,Auto">
-
-                    <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Border>
-                            <StackPanel Spacing="10">
-                                <material:MaterialIcon
-                                    Width="100"
-                                    Height="100"
-                                    Kind="ImageOutline" />
-                                <TextBlock FontSize="18" Text="Click here to upload your image" />
-                            </StackPanel>
-                        </Border>
-                    </Button>
-
-                    <TextBox
-                        Grid.Row="1"
-                        Height="60"
-                        Margin="0,10,0,10"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        FontSize="16"
-                        Watermark="Or paste your image url here..." />
-
-                    <StackPanel
-                        Grid.Row="2"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal"
-                        Spacing="5">
-                        <Button
-                            Width="50"
-                            Height="40"
-                            BorderBrush="{DynamicResource OkColor}"
-                            Command="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).UploadImageCommand}"
-                            Content="Ok" />
-                        <Button
-                            Height="40"
-                            BorderBrush="{DynamicResource ErrorColor}"
-                            Command="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).CancelUploadCommand}"
-                            Content="{Binding L[CancelButton]}" />
-                    </StackPanel>
-
-                </Grid>
-            </Border>
-        </Popup>
 
         <!--  Preview Card  -->
         <Border
@@ -155,24 +101,53 @@
             Height="240"
             Margin="10"
             HorizontalAlignment="Stretch"
-            ClipToBounds="True"
-            CornerRadius="10">
-            <Grid ColumnDefinitions="Auto,*">
-				
-                <Image
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    asyncImageLoader:ImageLoader.Source="{Binding RecipeDraft.ImagePath}"
-                    Stretch="Uniform" />
+            ClipToBounds="True">
 
-                <Button
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Background="Transparent"
-                    Command="{Binding $parent[views:AddRecipeView].((vm:AddRecipeViewModel)DataContext).UploadImageCommand}" />
+            <Grid ColumnDefinitions="300,*">
 
+                <Grid Margin="2" RowDefinitions="*,Auto">
+
+                    <Button
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Background="{DynamicResource BackgroundColorShadow}"
+                        Command="{Binding UploadImageCommand}">
+                        <Grid>
+                            <Image
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Source="{Binding RecipeDraft.ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
+                                Stretch="UniformToFill" />
+
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                IsVisible="{Binding IsImgTipVisible}"
+                                Spacing="10">
+                                <material:MaterialIcon
+                                    Width="50"
+                                    Height="50"
+                                    Kind="ImageOutline" />
+                                <TextBlock Text="{Binding L[SelectImageButton]}" />
+                            </StackPanel>
+                        </Grid>
+                    </Button>
+
+
+                    <TextBox
+                        Grid.Row="1"
+                        Height="60"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="16"
+                        Watermark="Or paste your image url here..." />
+                </Grid>
 
                 <Grid Grid.Column="1" Margin="10,0,10,0">
                     <Grid.RowDefinitions>

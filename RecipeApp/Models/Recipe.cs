@@ -16,7 +16,9 @@ namespace RecipeApp.Models
         [ObservableProperty]
         private bool _isFavorite;
         public string? Making { get; set; }
-        public string? ImagePath { get; set; }
+
+        [ObservableProperty]
+        private byte[]? _imageBytes;
 
         public ObservableCollection<Ingredient> Ingredients { get; set; } = new();
     }

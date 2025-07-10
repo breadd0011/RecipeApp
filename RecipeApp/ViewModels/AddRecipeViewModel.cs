@@ -1,9 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RecipeApp.Models;
 using RecipeApp.Services;
+using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Utils;
 
 namespace RecipeApp.ViewModels
 {
@@ -12,53 +19,85 @@ namespace RecipeApp.ViewModels
         [ObservableProperty] private INavigationService _navService;
         [ObservableProperty] private Recipe _recipeDraft;
         [ObservableProperty] private Ingredient _ingredientDraft;
-
-        [ObservableProperty] private bool _isPopupOpen;
+        [ObservableProperty] private bool _isImgTipVisible;
 
         private readonly IRecipeDataService _recipeDataService;
+        private readonly IFileService _fileService;
         private readonly Recipe? loadedRecipe;
 
         public ILocalizationService L { get; }
 
-        public AddRecipeViewModel(INavigationService navService, IRecipeDataService recipeDataService, ILocalizationService localizationService, Recipe? recipe = null)
+        public AddRecipeViewModel(
+            INavigationService navService,
+            IRecipeDataService recipeDataService,
+            ILocalizationService localizationService,
+            IFileService fileService,
+            Recipe? recipe = null)
         {
             _navService = navService;
             _recipeDataService = recipeDataService;
             L = localizationService;
-
+            _fileService = fileService;
             loadedRecipe = recipe;
 
             if (recipe == null)
             {
                 RecipeDraft = new Recipe();
-                RecipeDraft.ImagePath = "avares://RecipeApp/Assets/Images/food_placeholder.png";
+                IsImgTipVisible = true;
             }
             else
             {
-                RecipeDraft = recipe;
+                RecipeDraft = new Recipe
+                {
+                    Id = recipe.Id,
+                    Name = recipe.Name,
+                    Description = recipe.Description,
+                    RequiredTime = recipe.RequiredTime,
+                    ImageBytes = recipe.ImageBytes?.ToArray(),
+                    Ingredients = new ObservableCollection<Ingredient>(
+                        recipe.Ingredients.Select(i => new Ingredient
+                        {
+                            Name = i.Name,
+                            Amount = i.Amount,
+                            Unit = i.Unit
+                        }))
+                };
+
+                if (RecipeDraft.ImageBytes != null)
+                {
+                    IsImgTipVisible = false;
+                }
             }
 
             IngredientDraft = new Ingredient();
         }
 
-        [RelayCommand]
-        private void UploadImage()
+        private byte[] LoadPlaceholderImage()
         {
-            if (IsPopupOpen)
-            {
-                //Do Stuff
-                IsPopupOpen = false;
-            }
-            else
-            {
-                IsPopupOpen = true;
-            }
+            var assembly = Assembly.GetExecutingAssembly();
+            using var stream = assembly.GetManifestResourceStream(Constants.PlaceholderImagePath);
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return memoryStream.ToArray();
         }
 
         [RelayCommand]
-        private void CancelUpload()
+        private async Task UploadImage()
         {
-            IsPopupOpen = false;
+            var file = await _fileService.OpenFileAsync();
+            if (file is null) return;
+
+            await using var stream = await file.OpenReadAsync();
+            using var memoryStream = new MemoryStream();
+
+            await stream.CopyToAsync(memoryStream);
+            RecipeDraft.ImageBytes = memoryStream.ToArray();
+
+            if (RecipeDraft.ImageBytes != null)
+            {
+                IsImgTipVisible = false;
+            }
+
         }
 
         [RelayCommand]
@@ -77,9 +116,20 @@ namespace RecipeApp.ViewModels
         [RelayCommand]
         private void AddRecipe()
         {
-            if (loadedRecipe != null && RecipeDraft.Id == loadedRecipe.Id)
+            if (RecipeDraft.ImageBytes == null)
             {
-                _recipeDataService.UpdateRecipe(RecipeDraft);
+                RecipeDraft.ImageBytes = LoadPlaceholderImage();
+            }
+
+            if (loadedRecipe != null)
+            {
+                loadedRecipe.Name = RecipeDraft.Name;
+                loadedRecipe.Description = RecipeDraft.Description;
+                loadedRecipe.RequiredTime = RecipeDraft.RequiredTime;
+                loadedRecipe.ImageBytes = RecipeDraft.ImageBytes;
+                loadedRecipe.Ingredients = RecipeDraft.Ingredients;
+
+                _recipeDataService.UpdateRecipe(loadedRecipe);
             }
             else
             {
@@ -94,6 +144,5 @@ namespace RecipeApp.ViewModels
         {
             NavService.NavigateTo<RecipeExplorerViewModel>();
         }
-
     }
 }
