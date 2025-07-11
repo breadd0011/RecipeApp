@@ -258,7 +258,9 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         FontSize="16"
-                        Text="{Binding IngredientDraft.Amount}"
+                        KeyDown="OnNumericTextBoxKeyDown"
+                        PastingFromClipboard="OnPastingFromClipboard"
+                        Text="{Binding IngredientDraft.Amount, Mode=TwoWay}"
                         Watermark="{Binding L[QuantityWatermark]}" />
                     <TextBox
                         Width="100"
