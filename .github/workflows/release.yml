@@ -18,6 +18,7 @@ jobs:
         
       - name: Get Version from Tag
         id: get-version
+        shell: bash
         run: |
           version=${GITHUB_REF#refs/tags/v}
           echo "version=$version" >> $GITHUB_OUTPUT
@@ -29,7 +30,7 @@ jobs:
           
       - name: Publish Application
         run: |
-          dotnet publish RecipeApp/RecipeApp.csproj \
+          dotnet publish MyProject/MyProject.csproj \
             -c Release \
             -o publish \
             -r win-x64 \
@@ -39,5 +40,5 @@ jobs:
         run: |
           dotnet tool install -g vpk
           vpk download github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }}
-          vpk pack -u breadd.RecipeManagerApp -v ${{ steps.get-version.outputs.version }} -p publish -e RecipeApp.exe
+          vpk pack -u MyCompany.MyApp -v ${{ steps.get-version.outputs.version }} -p publish -e MyApp.exe
           vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish
