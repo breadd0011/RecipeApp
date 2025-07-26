@@ -1,60 +1,46 @@
-name: Release
+
+name: Create Velopack Release
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
-  build:
-    name: Build and Package
+  create-release:
     runs-on: windows-latest
-
+    
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Get Version from Tag
+        id: get-version
+        shell: bash
+        run: |
+          version=${GITHUB_REF#refs/tags/v}
+          echo "version=$version" >> $GITHUB_OUTPUT
+          
+      - name: Install .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build app
-        run: dotnet publish RecipeApp/RecipeApp.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o publish
-
-      - name: Install Velopack CLI
-        run: dotnet tool install --global Velopack.Cli
-
-      - name: Package with Velopack
+      - name: Publish Application
+        shell: pwsh
         run: |
-          velopack pack --input publish `
-                        --platform win `
-                        --version "${{ github.ref_name }}" `
-                        --output artifacts `
-                        --sign=false
-
-      - name: Upload Velopack Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: velopack-artifacts
-          path: artifacts
-
-  release:
-    name: Create GitHub Release
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: velopack-artifacts
-          path: artifacts
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: artifacts/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          dotnet publish RecipeApp/RecipeApp.csproj `
+          -c Release `
+          -o publish `
+          -r win-x64 `
+        
+            
+      - name: Create Velopack Release
+        run: |
+          dotnet tool install -g vpk
+          vpk download github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }}
+          vpk pack -u breadd.RecipeManagerApp -v ${{ steps.get-version.outputs.version }} -p publish -e RecipeApp.exe
+          vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish
