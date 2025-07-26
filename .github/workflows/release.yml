@@ -27,13 +27,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          
+
       - name: Publish Application
+        shell: pwsh  # Explicitly use PowerShell
         run: |
-          dotnet publish MyProject/MyProject.csproj \
-            -c Release \
-            -o publish \
-            -r win-x64 \
+          dotnet publish RecipeApp/RecipeApp.csproj `
+          -c Release `
+          -o publish `
+          -r win-x64 `
+        
             
       - name: Create Velopack Release
         run: |
