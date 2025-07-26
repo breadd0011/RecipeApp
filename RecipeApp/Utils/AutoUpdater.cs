@@ -7,11 +7,16 @@ namespace RecipeApp.Utils
     {
         public static UpdateManager UpdateManager = new(Constants.GitHubRepoUrl);
         public static UpdateInfo? Update;
-        public static bool UpdateAvailable => Update != null;
+        public static bool UpdateAvailable = false;
 
         public static async Task CheckForUpdatesAsync()
         {
             Update = await UpdateManager.CheckForUpdatesAsync();
+
+            if (Update != null)
+            {
+                UpdateAvailable = true;
+            }
         }
 
         public static async Task DownloadUpdateAsync()
