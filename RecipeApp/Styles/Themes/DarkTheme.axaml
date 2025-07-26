@@ -4,15 +4,15 @@
     <Color x:Key="TextColor">#edf2f4</Color>
     <Color x:Key="TertiaryColor">#355070</Color>-->
 
-    <Color x:Key="PrimaryColor">#373B41</Color>
+    <!--<Color x:Key="PrimaryColor">#373B41</Color>
 	<Color x:Key="BackgroundColor">#1c1e21</Color>
 	<Color x:Key="TextColor">#fffefc</Color>
-	<Color x:Key="TertiaryColor">#33595e</Color>
+	<Color x:Key="TertiaryColor">#33595e</Color>-->
 
-    <!--<Color x:Key="PrimaryColor">#293035</Color>
+    <Color x:Key="PrimaryColor">#293035</Color>
     <Color x:Key="BackgroundColor">#292926</Color>
     <Color x:Key="TextColor">#fffefc</Color>
-    <Color x:Key="TertiaryColor">#ED5F44</Color>-->
+    <Color x:Key="TertiaryColor">#ED5F44</Color>
 
     <!--<Color x:Key="PrimaryColor">#1F1F1F</Color>
 	<Color x:Key="BackgroundColor">#1C1C1C</Color>
