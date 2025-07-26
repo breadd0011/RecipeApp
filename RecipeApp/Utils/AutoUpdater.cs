@@ -6,26 +6,32 @@ namespace RecipeApp.Utils
     public class AutoUpdater
     {
         public static UpdateManager UpdateManager = new(Constants.GitHubRepoUrl);
-        public static UpdateInfo? NewVersion;
-        public static bool UpdateAvailable => NewVersion != null;
+        public static UpdateInfo? Update;
+        public static bool UpdateAvailable => Update != null;
 
         public static async Task CheckForUpdatesAsync()
         {
-            UpdateManager = new UpdateManager(Constants.GitHubRepoUrl);
-
-            NewVersion = await UpdateManager.CheckForUpdatesAsync();
-
-            if (NewVersion == null) return;
+            Update = await UpdateManager.CheckForUpdatesAsync();
         }
 
         public static async Task DownloadUpdateAsync()
         {
-            if (NewVersion != null) await UpdateManager.DownloadUpdatesAsync(NewVersion);
+            if (UpdateAvailable)
+            {
+                await UpdateManager.DownloadUpdatesAsync(Update!);
+            }
+
+            return;
         }
 
         public static void UpdateAndRestartApp()
         {
-            if (NewVersion != null) UpdateManager.ApplyUpdatesAndRestart(NewVersion);
+            if (UpdateAvailable)
+            {
+                UpdateManager.ApplyUpdatesAndRestart(Update!);
+            }
+
+            return;
         }
     }
 }

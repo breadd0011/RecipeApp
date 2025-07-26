@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Configuration;
@@ -47,38 +47,22 @@ namespace RecipeApp.ViewModels
 
             if (AutoUpdater.UpdateManager.IsInstalled)
             {
-                CheckForUpdates();
+                Initialize();
             }
 
         }
 
-        private void CheckForUpdates()
+        private void Initialize()
         {
             Task.Run(async () =>
             {
                 try
                 {
-                    bool IsUpdateDownloaded = false;
-
                     await AutoUpdater.CheckForUpdatesAsync();
-
-                    if (AutoUpdater.UpdateAvailable)
-                    {
-                        await AutoUpdater.DownloadUpdateAsync();
-                        IsUpdateDownloaded = true;
-                    }
-
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        if (IsUpdateDownloaded)
-                        {
-                            IsUpdateAvailable = true;
-                        }
-                    });
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    Debug.Write(ex);
                 }
             });
         }
@@ -177,8 +161,9 @@ namespace RecipeApp.ViewModels
         }
 
         [RelayCommand]
-        private void UpdateApp()
+        private async Task UpdateApp()
         {
+            await AutoUpdater.DownloadUpdateAsync();
             AutoUpdater.UpdateAndRestartApp();
         }
     }
