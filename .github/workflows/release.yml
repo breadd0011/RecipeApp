@@ -1,40 +1,60 @@
-name: Deploy to GitHub Releases
+name: Release
 
 on:
   push:
-    branches:
-      - master
-
-permissions:
-  contents: write
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  deploy-to-github-releases:
+  build:
+    name: Build and Package
     runs-on: windows-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Get Version from Project File
-        id: get-version
-        shell: bash
-        run: echo "version=$(grep -oE '<Version>[^<]+' RecipeApp/RecipeApp.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
-
-      - name: Install .NET
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '8.0.x'
 
-      - name: Publish Application
-        run: dotnet publish RecipeApp/RecipeApp.csproj -c Release -o publish -r win-x64 --self-contained true
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build app
+        run: dotnet publish RecipeApp/RecipeApp.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o publish
 
       - name: Install Velopack CLI
-        run: dotnet tool install -g vpk
+        run: dotnet tool install --global Velopack.Cli
 
-      - name: Create Velopack Release
+      - name: Package with Velopack
         run: |
-          vpk pack --channel win --packDir publish --baseUrl https://github.com/${{ github.repository }}/releases/download/v${{ steps.get-version.outputs.version }} --version ${{ steps.get-version.outputs.version }} --exe RecipeApp.exe
-          
-      - name: Upload to GitHub Releases
-        run: |
-          vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "RecipeApp ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }} --path ./Releases
+          velopack pack --input publish `
+                        --platform win `
+                        --version "${{ github.ref_name }}" `
+                        --output artifacts `
+                        --sign=false
+
+      - name: Upload Velopack Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: velopack-artifacts
+          path: artifacts
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: velopack-artifacts
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
