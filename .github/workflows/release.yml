@@ -29,7 +29,7 @@ jobs:
           
       - name: Publish Application
         run: |
-          dotnet publish MyProject/MyProject.csproj \
+          dotnet publish RecipeApp/RecipeApp.csproj \
             -c Release \
             -o publish \
             -r win-x64 \
@@ -39,5 +39,5 @@ jobs:
         run: |
           dotnet tool install -g vpk
           vpk download github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }}
-          vpk pack -u MyCompany.MyApp -v ${{ steps.get-version.outputs.version }} -p publish -e MyApp.exe
+          vpk pack -u breadd.RecipeManagerApp -v ${{ steps.get-version.outputs.version }} -p publish -e RecipeApp.exe
           vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish
