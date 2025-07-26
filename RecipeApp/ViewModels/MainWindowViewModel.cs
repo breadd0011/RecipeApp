@@ -59,6 +59,11 @@ namespace RecipeApp.ViewModels
                 try
                 {
                     await AutoUpdater.CheckForUpdatesAsync();
+                    if (AutoUpdater.UpdateAvailable)
+                    {
+                        IsUpdateAvailable = true;
+                    }
+
                 }
                 catch (Exception ex)
                 {
