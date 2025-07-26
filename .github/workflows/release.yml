@@ -34,7 +34,6 @@ jobs:
             -c Release \
             -o publish \
             -r win-x64 \
-            --self-contained true
             
       - name: Create Velopack Release
         run: |
