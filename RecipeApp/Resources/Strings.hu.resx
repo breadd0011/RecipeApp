@@ -204,6 +204,9 @@
   <data name="UnitWatermark" xml:space="preserve">
     <value>Egység</value>
   </data>
+  <data name="UpdateButton" xml:space="preserve">
+    <value>Frissítés elérhető</value>
+  </data>
   <data name="YesButton" xml:space="preserve">
     <value>Igen</value>
   </data>

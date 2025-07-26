@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Configuration;
@@ -16,11 +18,12 @@ namespace RecipeApp.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
-
         [ObservableProperty] private INavigationService _navService;
         [ObservableProperty] private ISearchService _searchService;
         [ObservableProperty] private Language _selectedLanguage;
+
         [ObservableProperty] private string _welcomeText;
+        [ObservableProperty] private bool _isUpdateAvailable = false;
 
         private readonly IConfiguration _config;
         public ILocalizationService L { get; }
@@ -41,6 +44,43 @@ namespace RecipeApp.ViewModels
             WelcomeText = _welcomeTexts[GetRandomText()];
 
             GoToExplorer();
+
+            if (AutoUpdater.UpdateManager.IsInstalled)
+            {
+                CheckForUpdates();
+            }
+
+        }
+
+        private void CheckForUpdates()
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    bool IsUpdateDownloaded = false;
+
+                    await AutoUpdater.CheckForUpdatesAsync();
+
+                    if (AutoUpdater.UpdateAvailable)
+                    {
+                        await AutoUpdater.DownloadUpdateAsync();
+                        IsUpdateDownloaded = true;
+                    }
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (IsUpdateDownloaded)
+                        {
+                            IsUpdateAvailable = true;
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
         }
 
         private ObservableCollection<string> _welcomeTexts = new ObservableCollection<string>
@@ -134,6 +174,12 @@ namespace RecipeApp.ViewModels
                 L.ChangeCulture(SelectedLanguage.Code);
                 SaveLanguageToConfig(SelectedLanguage.Code);
             }
+        }
+
+        [RelayCommand]
+        private void UpdateApp()
+        {
+            AutoUpdater.UpdateAndRestartApp();
         }
     }
 }

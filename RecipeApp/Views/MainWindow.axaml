@@ -16,172 +16,188 @@
     <Grid Background="{DynamicResource PrimaryColor}" ColumnDefinitions="280,*">
 
         <!--  SideBar  -->
-        <Border Grid.Column="0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <!--  Welcome Text and Search  -->
-                <StackPanel Grid.Row="0" Margin="10">
-                    <TextBlock
-                        Height="60"
-                        Margin="0,25,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Text="{Binding WelcomeText}" />
-
-                    <Separator
-                        Height="1"
-                        Margin="10"
-                        Opacity="0.3" />
-
-                    <TextBox
-                        Classes="SearchBox"
-                        MaxLength="32"
-                        Text="{Binding SearchService.SearchText, Mode=TwoWay}"
-                        Watermark="{Binding L[SearchWatermark]}">
-                        <TextBox.InnerLeftContent>
-                            <material:MaterialIcon
-                                Width="25"
-                                Height="25"
-                                Margin="10,0,0,0"
-                                Kind="Search" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-
-                    <Separator
-                        Height="1"
-                        Margin="10"
-                        Opacity="0.3" />
-
-                    <!--  Add Button  -->
-                    <Button
-                        Classes="SideBar"
-                        Command="{Binding AddRecipeCommand}"
-                        CornerRadius="5">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <material:MaterialIcon
-                                Width="25"
-                                Height="25"
-                                VerticalAlignment="Center"
-                                Kind="Add" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Text="{Binding L[AddRecipeButton]}" />
-                        </StackPanel>
-                    </Button>
-
-                </StackPanel>
+        <Grid RowDefinitions="Auto,Auto,*">
 
 
-                <StackPanel Grid.Row="1" Margin="10">
-                    <Separator
-                        Height="1"
-                        Margin="10"
-                        Opacity="0.3" />
+            <!--  Top Section  -->
+            <StackPanel Grid.Row="0" Margin="10,0,10,0">
+                <TextBlock
+                    Margin="30"
+                    HorizontalAlignment="Center"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Text="{Binding WelcomeText}" />
 
-                    <!--  Navigation Buttons  -->
-                    <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <material:MaterialIcon
-                                Width="25"
-                                Height="25"
-                                VerticalAlignment="Center"
-                                Kind="HomeOutline" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Text="{Binding L[HomeButton]}" />
-                        </StackPanel>
-                    </Button>
+                <Separator
+                    Height="1"
+                    Margin="10,0,10,10"
+                    Opacity="0.3" />
 
-                    <Button Classes="SideBar" Command="{Binding GoToFavoritesCommand}">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <material:MaterialIcon
-                                Width="25"
-                                Height="25"
-                                VerticalAlignment="Center"
-                                Kind="FavoriteOutline" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Text="{Binding L[FavoritesButton]}" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+                <TextBox
+                    Classes="SearchBox"
+                    MaxLength="32"
+                    Text="{Binding SearchService.SearchText, Mode=TwoWay}"
+                    Watermark="{Binding L[SearchWatermark]}">
+                    <TextBox.InnerLeftContent>
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            Margin="10,0,0,0"
+                            Kind="Search" />
+                    </TextBox.InnerLeftContent>
+                </TextBox>
 
-                <ComboBox
-                    Grid.Row="2"
-                    Margin="10,10,10,130"
-                    HorizontalAlignment="Right"
-                    HorizontalContentAlignment="Right"
-                    ItemsSource="{Binding Languages}"
-                    SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
 
-                    <Interaction.Behaviors>
-                        <EventTriggerBehavior EventName="SelectionChanged">
-                            <InvokeCommandAction Command="{Binding ChangeCultureCommand}" />
-                        </EventTriggerBehavior>
-                    </Interaction.Behaviors>
-
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <Image
-                                Width="30"
-                                Height="30"
-                                asyncImageLoader:ImageLoader.Source="{Binding FlagPath}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <!--  Bottom Buttons  -->
-                <StackPanel
-                    Grid.Row="2"
+                <Separator
+                    Height="1"
                     Margin="10"
-                    VerticalAlignment="Bottom">
+                    Opacity="0.3" />
 
-                    <Separator
-                        Height="1"
-                        Margin="10"
-                        Opacity="0.3" />
+                <!--  Add Button  -->
+                <Button
+                    Classes="SideBar"
+                    Command="{Binding AddRecipeCommand}"
+                    CornerRadius="5">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Kind="Add" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding L[AddRecipeButton]}" />
+                    </StackPanel>
+                </Button>
 
-                    <Button Classes="SideBar" Command="{Binding ChangeCultureCommand}">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <material:MaterialIcon
-                                Width="25"
-                                Height="25"
-                                VerticalAlignment="Center"
-                                Kind="SettingsOutline" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Text="{Binding L[SettingsButton]}" />
-                        </StackPanel>
-                    </Button>
+                <Separator
+                    Height="1"
+                    Margin="10"
+                    Opacity="0.3" />
 
-                    <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <material:MaterialIcon
-                                Width="25"
-                                Height="25"
-                                VerticalAlignment="Center"
-                                Kind="AboutOutline" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Text="{Binding L[AboutButton]}" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+            </StackPanel>
 
-            </Grid>
-        </Border>
+            <!--  Middle Section  -->
+            <StackPanel Grid.Row="1" Margin="10,0,10,0">
+
+                <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Kind="HomeOutline" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding L[HomeButton]}" />
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="SideBar" Command="{Binding GoToFavoritesCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Kind="FavoriteOutline" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding L[FavoritesButton]}" />
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+            <!--<ComboBox
+                Grid.Row="1"
+                Margin="10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                HorizontalContentAlignment="Right"
+                ItemsSource="{Binding Languages}"
+                SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+
+                <Interaction.Behaviors>
+                    <EventTriggerBehavior EventName="SelectionChanged">
+                        <InvokeCommandAction Command="{Binding ChangeCultureCommand}" />
+                    </EventTriggerBehavior>
+                </Interaction.Behaviors>
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Image
+                            Width="30"
+                            Height="30"
+                            asyncImageLoader:ImageLoader.Source="{Binding FlagPath}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>-->
+
+            <!--  Bottom Section  -->
+            <StackPanel
+                Grid.Row="2"
+                Margin="10"
+                VerticalAlignment="Bottom">
+
+                <Separator
+                    Height="1"
+                    Margin="10"
+                    Opacity="0.3" />
+
+
+                <Button
+                    Classes="SideBar"
+                    Command="{Binding UpdateAppCommand}"
+                    IsVisible="{Binding IsUpdateAvailable}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Kind="Update" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding L[UpdateButton]}" />
+                    </StackPanel>
+                </Button>
+
+
+
+                <Button Classes="SideBar" Command="{Binding ChangeCultureCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Kind="SettingsOutline" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding L[SettingsButton]}" />
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <material:MaterialIcon
+                            Width="25"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Kind="AboutOutline" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding L[AboutButton]}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
 
         <!--  Content  -->
         <TransitioningContentControl
