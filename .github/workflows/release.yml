@@ -41,5 +41,5 @@ jobs:
         run: |
           dotnet tool install -g vpk
           vpk download github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }}
-          vpk pack -u MyCompany.MyApp -v ${{ steps.get-version.outputs.version }} -p publish -e MyApp.exe
+          vpk pack -u MyCompany.MyApp -v ${{ steps.get-version.outputs.version }} -p publish -e RecipeApp.exe
           vpk upload github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} --publish
