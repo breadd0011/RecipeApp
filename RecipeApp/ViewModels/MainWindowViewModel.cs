@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -47,33 +46,8 @@ namespace RecipeApp.ViewModels
             SelectedLanguage = Languages.FirstOrDefault(l => l.Code == defaultLangCode);
             WelcomeText = _welcomeTexts[GetRandomText()];
 
-            if (_updateManager.IsInstalled)
-            {
-                CheckForUpdates();
-            }
-
             GoToExplorer();
 
-        }
-
-        private void CheckForUpdates()
-        {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var newUpdate = await _updateManager.CheckForUpdatesAsync();
-                    if (newUpdate != null)
-                    {
-                        IsUpdateAvailable = true;
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    Debug.Write(ex);
-                }
-            });
         }
 
         private ObservableCollection<string> _welcomeTexts = new ObservableCollection<string>
@@ -172,6 +146,8 @@ namespace RecipeApp.ViewModels
         [RelayCommand]
         private async Task UpdateApp()
         {
+            _updateInfo = await _updateManager.CheckForUpdatesAsync();
+
             if (_updateInfo != null)
             {
                 await _updateManager.DownloadUpdatesAsync(_updateInfo);

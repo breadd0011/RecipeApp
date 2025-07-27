@@ -148,10 +148,7 @@
                     Opacity="0.3" />
 
 
-                <Button
-                    Classes="SideBar"
-                    Command="{Binding UpdateAppCommand}"
-                    IsVisible="{Binding IsUpdateAvailable}">
+                <Button Classes="SideBar" Command="{Binding UpdateAppCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -164,7 +161,6 @@
                             Text="{Binding L[UpdateButton]}" />
                     </StackPanel>
                 </Button>
-
 
 
                 <Button Classes="SideBar" Command="{Binding ChangeCultureCommand}">
