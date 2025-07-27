@@ -13,6 +13,7 @@ using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Search;
 using RecipeApp.Utils;
+using Velopack;
 
 namespace RecipeApp.ViewModels
 {
@@ -24,6 +25,9 @@ namespace RecipeApp.ViewModels
 
         [ObservableProperty] private string _welcomeText;
         [ObservableProperty] private bool _isUpdateAvailable = false;
+
+        private UpdateManager _updateManager = new(Constants.GitHubRepoUrl);
+        private UpdateInfo? _updateInfo;
 
         private readonly IConfiguration _config;
         public ILocalizationService L { get; }
@@ -43,23 +47,23 @@ namespace RecipeApp.ViewModels
             SelectedLanguage = Languages.FirstOrDefault(l => l.Code == defaultLangCode);
             WelcomeText = _welcomeTexts[GetRandomText()];
 
-            GoToExplorer();
-
-            if (AutoUpdater.UpdateManager.IsInstalled)
+            if (_updateManager.IsInstalled)
             {
-                Initialize();
+                CheckForUpdates();
             }
+
+            GoToExplorer();
 
         }
 
-        private void Initialize()
+        private void CheckForUpdates()
         {
             Task.Run(async () =>
             {
                 try
                 {
-                    await AutoUpdater.CheckForUpdatesAsync();
-                    if (AutoUpdater.UpdateAvailable)
+                    var newUpdate = await _updateManager.CheckForUpdatesAsync();
+                    if (newUpdate != null)
                     {
                         IsUpdateAvailable = true;
                     }
@@ -168,8 +172,11 @@ namespace RecipeApp.ViewModels
         [RelayCommand]
         private async Task UpdateApp()
         {
-            await AutoUpdater.DownloadUpdateAsync();
-            AutoUpdater.UpdateAndRestartApp();
+            if (_updateInfo != null)
+            {
+                await _updateManager.DownloadUpdatesAsync(_updateInfo);
+                _updateManager.ApplyUpdatesAndRestart(_updateInfo);
+            }
         }
     }
 }
