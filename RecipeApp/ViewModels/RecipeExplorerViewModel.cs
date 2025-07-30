@@ -10,6 +10,7 @@ using RecipeApp.Services;
 using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
 
 namespace RecipeApp.ViewModels
@@ -17,6 +18,7 @@ namespace RecipeApp.ViewModels
     public partial class RecipeExplorerViewModel : ViewModelBase
     {
         [ObservableProperty] private INavigationService _navService;
+        [ObservableProperty] private PageService _pageService;
 
         [ObservableProperty] private ObservableCollection<Recipe> _recipes;
         [ObservableProperty] private ObservableCollection<Recipe> _filteredRecipes;
@@ -36,6 +38,7 @@ namespace RecipeApp.ViewModels
 
         public RecipeExplorerViewModel(
             INavigationService navService,
+            PageService pageService,
             FavoritesViewModel favoritesViewModel,
             IRecipeDataService recipeDataService,
             ILocalizationService localizationService,
@@ -43,6 +46,7 @@ namespace RecipeApp.ViewModels
             IFileService fileService)
         {
             _navService = navService;
+            _pageService = pageService;
             _favoritesViewModel = favoritesViewModel;
             _recipeDataService = recipeDataService;
             _searchService = searchService;
@@ -163,7 +167,7 @@ namespace RecipeApp.ViewModels
         {
             if (recipe != null)
             {
-                NavService.NavigateTo(new AddRecipeViewModel(NavService, _recipeDataService, L, _fileService, recipe));
+                NavService.NavigateTo(new AddRecipeViewModel(NavService, _pageService, _recipeDataService, L, _fileService, recipe));
             }
         }
     }

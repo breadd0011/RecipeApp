@@ -15,6 +15,7 @@ namespace RecipeApp
             try
             {
                 VelopackApp.Build()
+                    .SetAutoApplyOnStartup(true)
                     .Run();
 
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);

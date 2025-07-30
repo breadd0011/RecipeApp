@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RecipeApp.Models;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
 using RecipeApp.Utils;
 
@@ -15,21 +15,21 @@ namespace RecipeApp.ViewModels
     {
         [ObservableProperty] private INavigationService _navService;
         [ObservableProperty] private ISearchService _searchService;
-        [ObservableProperty] private Language _selectedLanguage;
+        [ObservableProperty] private PageService _pageService;
 
-        [ObservableProperty] private string _welcomeText;
         [ObservableProperty] private bool _isUpdateAvailable = false;
-
         public ILocalizationService L { get; }
 
         public MainWindowViewModel(
             INavigationService navService,
             ILocalizationService localizationService,
-            ISearchService searchService)
+            ISearchService searchService,
+            PageService pageService)
         {
             _navService = navService;
             L = localizationService;
             _searchService = searchService;
+            _pageService = pageService;
 
             GoToExplorer();
 
@@ -75,30 +75,35 @@ namespace RecipeApp.ViewModels
         private void GoToExplorer()
         {
             NavService.NavigateTo<RecipeExplorerViewModel>();
+            PageService.CurrentPageType = typeof(RecipeExplorerViewModel);
         }
 
         [RelayCommand]
         private void GoToFavorites()
         {
             NavService.NavigateTo<FavoritesViewModel>();
+            PageService.CurrentPageType = typeof(FavoritesViewModel);
         }
 
         [RelayCommand]
         private void GoToSettings()
         {
             NavService.NavigateTo<SettingsViewModel>();
+            PageService.CurrentPageType = typeof(SettingsViewModel);
         }
 
         [RelayCommand]
         private void GoToAbout()
         {
             NavService.NavigateTo<AboutViewModel>();
+            PageService.CurrentPageType = typeof(AboutViewModel);
         }
 
         [RelayCommand]
         private void AddRecipe()
         {
             NavService.NavigateTo<AddRecipeViewModel>();
+            PageService.CurrentPageType = typeof(AddRecipeViewModel);
         }
 
         [RelayCommand]

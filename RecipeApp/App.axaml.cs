@@ -15,6 +15,7 @@ using RecipeApp.Services;
 using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
 using RecipeApp.Utils;
 using RecipeApp.ViewModels;
@@ -65,6 +66,7 @@ namespace RecipeApp
             collection.AddSingleton<INavigationService, NavigationService>();
             collection.AddSingleton<ISearchService, SearchService>();
             collection.AddSingleton<IFileService, FileService>();
+            collection.AddSingleton<PageService>();
 
             collection.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
 
@@ -106,7 +108,7 @@ namespace RecipeApp
             {
                 var defaultConfig = new
                 {
-                    AppSettings = new { DefaultLanguage = "en" }
+                    AppSettings = new { Language = "en" }
                 };
 
                 File.WriteAllText(

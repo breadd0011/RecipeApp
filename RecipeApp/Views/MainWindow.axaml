@@ -55,9 +55,10 @@
 
                 <!--  Add Button  -->
                 <Button
-                    Classes="SideBar"
+                    Classes="Sidebar"
                     Command="{Binding AddRecipeCommand}"
-                    CornerRadius="5">
+                    CornerRadius="5"
+                    IsEnabled="{Binding !PageService.IsAddRecipeActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -80,8 +81,10 @@
 
             <!--  Middle Section  -->
             <StackPanel Grid.Row="1" Margin="10,0,10,0">
-
-                <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToExplorerCommand}"
+                    IsEnabled="{Binding !PageService.IsExplorerActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -95,7 +98,10 @@
                     </StackPanel>
                 </Button>
 
-                <Button Classes="SideBar" Command="{Binding GoToFavoritesCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToFavoritesCommand}"
+                    IsEnabled="{Binding !PageService.IsFavoritesActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -108,7 +114,6 @@
                             Text="{Binding L[FavoritesButton]}" />
                     </StackPanel>
                 </Button>
-
             </StackPanel>
 
             <!--  Bottom Section  -->
@@ -124,7 +129,7 @@
 
 
                 <Button
-                    Classes="SideBar"
+                    Classes="Sidebar"
                     Command="{Binding UpdateAppCommand}"
                     IsVisible="{Binding IsUpdateAvailable}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -141,7 +146,10 @@
                 </Button>
 
 
-                <Button Classes="SideBar" Command="{Binding GoToSettingsCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToSettingsCommand}"
+                    IsEnabled="{Binding !PageService.IsSettingsActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -155,7 +163,10 @@
                     </StackPanel>
                 </Button>
 
-                <Button Classes="SideBar" Command="{Binding GoToAboutCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToAboutCommand}"
+                    IsEnabled="{Binding !PageService.IsAboutActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"

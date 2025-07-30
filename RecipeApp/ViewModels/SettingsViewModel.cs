@@ -47,7 +47,7 @@ namespace RecipeApp.ViewModels
         {
             var config = new
             {
-                AppSettings = new { DefaultLanguage = languageCode }
+                AppSettings = new { Language = languageCode }
             };
 
             string json = JsonSerializer.Serialize(
