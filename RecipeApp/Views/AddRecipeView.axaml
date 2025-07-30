@@ -103,12 +103,12 @@
             HorizontalAlignment="Stretch"
             ClipToBounds="True">
 
-            <Grid ColumnDefinitions="300,*">
+            <Grid ColumnDefinitions="360,*">
 
                 <Grid Margin="2" RowDefinitions="*,Auto">
 
                     <Button
-                        Margin="0,0,0,10"
+                        Padding="0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
@@ -116,11 +116,13 @@
                         Background="{DynamicResource BackgroundColorShadow}"
                         Command="{Binding UploadImageCommand}">
                         <Grid>
-                            <Image
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Source="{Binding RecipeDraft.ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
-                                Stretch="UniformToFill" />
+                            <Border ClipToBounds="True" CornerRadius="5">
+                                <Image
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Source="{Binding RecipeDraft.ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
+                                    Stretch="UniformToFill" />
+                            </Border>
 
                             <StackPanel
                                 HorizontalAlignment="Center"
@@ -136,17 +138,6 @@
                             </StackPanel>
                         </Grid>
                     </Button>
-
-
-                    <TextBox
-                        Grid.Row="1"
-                        Height="60"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        FontSize="16"
-                        Watermark="Or paste your image url here..." />
                 </Grid>
 
                 <Grid Grid.Column="1" Margin="10,0,10,0">
