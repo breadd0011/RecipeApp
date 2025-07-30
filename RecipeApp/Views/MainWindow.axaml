@@ -17,6 +17,12 @@
 
         <!--  SideBar  -->
         <Grid RowDefinitions="Auto,Auto,*">
+            <Grid.Background>
+                <ImageBrush
+                    Opacity="0.03"
+                    Source="/Assets/Images/seamlessbg.png"
+                    Stretch="UniformToFill" />
+            </Grid.Background>
 
 
             <!--  Top Section  -->
