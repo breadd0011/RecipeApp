@@ -13,6 +13,7 @@ using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Search;
 using RecipeApp.Utils;
 using Velopack;
+using Velopack.Sources;
 
 namespace RecipeApp.ViewModels
 {
@@ -25,7 +26,7 @@ namespace RecipeApp.ViewModels
         [ObservableProperty] private string _welcomeText;
         [ObservableProperty] private bool _isUpdateAvailable = false;
 
-        private UpdateManager _updateManager = new(Constants.GitHubRepoUrl);
+        private UpdateManager _updateManager = new UpdateManager(new GithubSource(Constants.GitHubRepoUrl, null, false));
         private UpdateInfo? _updateInfo;
 
         private readonly IConfiguration _config;
