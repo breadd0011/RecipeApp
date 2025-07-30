@@ -22,7 +22,7 @@
             <!--  Top Section  -->
             <StackPanel Grid.Row="0" Margin="10,0,10,0">
                 <TextBlock
-                    Margin="30"
+                    Margin="30,30,30,25"
                     HorizontalAlignment="Center"
                     FontSize="22"
                     FontWeight="Bold"
@@ -166,8 +166,7 @@
                 </Button>
 
 
-
-                <Button Classes="SideBar" Command="{Binding ChangeCultureCommand}">
+                <Button Classes="SideBar" Command="{Binding GoToSettingsCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -181,7 +180,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
+                <Button Classes="SideBar" Command="{Binding GoToAboutCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"

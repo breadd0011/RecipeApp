@@ -1,0 +1,33 @@
+<UserControl
+    x:Class="RecipeApp.Views.SettingsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+	xmlns:vm="using:RecipeApp.ViewModels"
+    x:DataType="vm:SettingsViewModel">
+
+    <!--  Header  -->
+    <Border
+        Grid.Row="0"
+        Height="80"
+        VerticalAlignment="Top"
+        BoxShadow="0 0 5 black">
+
+        <Grid Margin="10" ColumnDefinitions="*,*">
+
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="24"
+                FontWeight="Bold"
+                Text="{Binding L[SettingsHeader]}" />
+
+        </Grid>
+
+
+    </Border>
+
+</UserControl>

@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutButton" xml:space="preserve">
-    <value>Bővebben</value>
+    <value>Névjegy</value>
+  </data>
+  <data name="AboutHeader" xml:space="preserve">
+    <value>Névjegy</value>
   </data>
   <data name="AddIngredientButton" xml:space="preserve">
     <value>Hozzáad</value>
@@ -199,6 +202,9 @@
     <value>Kattints ide a kép kiválasztásához</value>
   </data>
   <data name="SettingsButton" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
     <value>Beállítások</value>
   </data>
   <data name="UnitWatermark" xml:space="preserve">

@@ -161,6 +161,18 @@ namespace RecipeApp.ViewModels
         }
 
         [RelayCommand]
+        private void GoToSettings()
+        {
+            NavService.NavigateTo<SettingsViewModel>();
+        }
+
+        [RelayCommand]
+        private void GoToAbout()
+        {
+            NavService.NavigateTo<AboutViewModel>();
+        }
+
+        [RelayCommand]
         private void AddRecipe()
         {
             NavService.NavigateTo<AddRecipeViewModel>();

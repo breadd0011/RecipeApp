@@ -35,6 +35,8 @@ namespace RecipeApp
             collection.AddSingleton<MainWindowViewModel>();
             collection.AddSingleton<RecipeExplorerViewModel>();
             collection.AddSingleton<FavoritesViewModel>();
+            collection.AddSingleton<SettingsViewModel>();
+            collection.AddSingleton<AboutViewModel>();
             collection.AddTransient<AddRecipeViewModel>();
             collection.AddTransient<OpenedRecipeViewModel>();
 

@@ -120,6 +120,9 @@
   <data name="AboutButton" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="AboutHeader" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="AddIngredientButton" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -199,6 +202,9 @@
     <value>Click here to select your image</value>
   </data>
   <data name="SettingsButton" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="UnitWatermark" xml:space="preserve">
