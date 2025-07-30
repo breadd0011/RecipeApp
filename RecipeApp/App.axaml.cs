@@ -32,6 +32,26 @@ namespace RecipeApp
         public override void OnFrameworkInitializationCompleted()
         {
             var collection = new ServiceCollection();
+
+            // Ensure config file exists before building configuration
+            EnsureConfigFileExists();
+
+            // Build configuration
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("settings.json")
+                .Build();
+
+            // Create and bind AppSettings
+            var appSettings = new AppSettings();
+            config.GetSection("AppSettings").Bind(appSettings);
+            collection.AddSingleton(appSettings);
+
+            // Set culture
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(appSettings.Language);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(appSettings.Language);
+
+            // Register other services
             collection.AddSingleton<MainWindowViewModel>();
             collection.AddSingleton<RecipeExplorerViewModel>();
             collection.AddSingleton<FavoritesViewModel>();
@@ -52,20 +72,8 @@ namespace RecipeApp
 
             var serviceProvider = collection.BuildServiceProvider();
 
-            EnsureConfigFileExists();
-            var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("settings.json")
-            .Build();
-
-            var defaultLang = config["AppSettings:DefaultLanguage"] ?? "en";
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(defaultLang);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(defaultLang);
-
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {

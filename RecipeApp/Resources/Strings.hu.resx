@@ -132,8 +132,8 @@
   <data name="AddRecipeTitle" xml:space="preserve">
     <value>Recept Hozzáadása</value>
   </data>
-  <data name="AllRecipesTitle" xml:space="preserve">
-    <value>Összes Recept</value>
+  <data name="AllRecipesHeader" xml:space="preserve">
+    <value>Receptek</value>
   </data>
   <data name="CancelButton" xml:space="preserve">
     <value>Mégse</value>
@@ -153,8 +153,8 @@
   <data name="FavoritesButton" xml:space="preserve">
     <value>Kedvencek</value>
   </data>
-  <data name="FavoritesTitle" xml:space="preserve">
-    <value>Kedvenc Receptek</value>
+  <data name="FavoritesHeader" xml:space="preserve">
+    <value>Kedvencek</value>
   </data>
   <data name="HomeButton" xml:space="preserve">
     <value>Receptek</value>
@@ -164,6 +164,9 @@
   </data>
   <data name="IngredientWatermark" xml:space="preserve">
     <value>Hozzávaló</value>
+  </data>
+  <data name="LanguageOption" xml:space="preserve">
+    <value>Nyelv</value>
   </data>
   <data name="MakingSectionTitle" xml:space="preserve">
     <value>Elkészítés:</value>

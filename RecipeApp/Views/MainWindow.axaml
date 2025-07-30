@@ -21,12 +21,12 @@
 
             <!--  Top Section  -->
             <StackPanel Grid.Row="0" Margin="10,0,10,0">
-                <TextBlock
-                    Margin="30,30,30,25"
+                <Image
+                    Height="180"
                     HorizontalAlignment="Center"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Text="{Binding WelcomeText}" />
+                    RenderOptions.BitmapInterpolationMode="HighQuality"
+                    Source="/Assets/Images/header.png"
+                    Stretch="UniformToFill" />
 
                 <Separator
                     Height="1"
@@ -110,31 +110,6 @@
                 </Button>
 
             </StackPanel>
-
-            <!--<ComboBox
-                Grid.Row="1"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                HorizontalContentAlignment="Right"
-                ItemsSource="{Binding Languages}"
-                SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
-
-                <Interaction.Behaviors>
-                    <EventTriggerBehavior EventName="SelectionChanged">
-                        <InvokeCommandAction Command="{Binding ChangeCultureCommand}" />
-                    </EventTriggerBehavior>
-                </Interaction.Behaviors>
-
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <Image
-                            Width="30"
-                            Height="30"
-                            asyncImageLoader:ImageLoader.Source="{Binding FlagPath}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>-->
 
             <!--  Bottom Section  -->
             <StackPanel

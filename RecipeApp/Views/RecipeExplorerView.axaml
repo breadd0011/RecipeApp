@@ -39,7 +39,7 @@
                     VerticalAlignment="Center"
                     FontSize="24"
                     FontWeight="Bold"
-                    Text="{Binding L[AllRecipesTitle]}" />
+                    Text="{Binding L[AllRecipesHeader]}" />
             </Grid>
         </Border>
 
