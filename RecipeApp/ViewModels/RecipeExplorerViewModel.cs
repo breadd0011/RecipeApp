@@ -107,6 +107,7 @@ namespace RecipeApp.ViewModels
             if (recipe != null)
             {
                 NavService.NavigateTo(new OpenedRecipeViewModel(recipe, L));
+                PageService.CurrentPageType = typeof(OpenedRecipeViewModel);
             }
         }
 
@@ -168,6 +169,7 @@ namespace RecipeApp.ViewModels
             if (recipe != null)
             {
                 NavService.NavigateTo(new AddRecipeViewModel(NavService, _pageService, _recipeDataService, L, _fileService, recipe));
+                PageService.CurrentPageType = typeof(OpenedRecipeViewModel);
             }
         }
     }
