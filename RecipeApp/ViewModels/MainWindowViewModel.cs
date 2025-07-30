@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Configuration;
@@ -12,8 +13,6 @@ using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Search;
 using RecipeApp.Utils;
-using Velopack;
-using Velopack.Sources;
 
 namespace RecipeApp.ViewModels
 {
@@ -24,10 +23,7 @@ namespace RecipeApp.ViewModels
         [ObservableProperty] private Language _selectedLanguage;
 
         [ObservableProperty] private string _welcomeText;
-        [ObservableProperty] private bool _isUpdateAvailable = false;
-
-        private UpdateManager _updateManager = new UpdateManager(new GithubSource(Constants.GitHubRepoUrl, null, false));
-        private UpdateInfo? _updateInfo;
+        [ObservableProperty] private bool _isUpdateDownloaded = false;
 
         private readonly IConfiguration _config;
         public ILocalizationService L { get; }
@@ -49,6 +45,40 @@ namespace RecipeApp.ViewModels
 
             GoToExplorer();
 
+            if (AutoUpdater.UpdateManager.IsInstalled)
+            {
+                CheckForUpdates();
+            }
+
+        }
+
+        private void CheckForUpdates()
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await AutoUpdater.CheckForUpdatesAsync();
+
+                    if (AutoUpdater.UpdateAvailable)
+                    {
+                        await AutoUpdater.DownloadUpdateAsync();
+                    }
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (AutoUpdater.UpdateAvailable)
+                        {
+                            IsUpdateDownloaded = true;
+                        }
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
         }
 
         private ObservableCollection<string> _welcomeTexts = new ObservableCollection<string>
@@ -145,15 +175,9 @@ namespace RecipeApp.ViewModels
         }
 
         [RelayCommand]
-        private async Task UpdateApp()
+        private void UpdateApp()
         {
-            _updateInfo = await _updateManager.CheckForUpdatesAsync();
-
-            if (_updateInfo != null)
-            {
-                await _updateManager.DownloadUpdatesAsync(_updateInfo);
-                _updateManager.ApplyUpdatesAndRestart(_updateInfo);
-            }
+            AutoUpdater.UpdateAndRestartApp();
         }
     }
 }

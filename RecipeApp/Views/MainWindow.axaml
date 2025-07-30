@@ -148,7 +148,7 @@
                     Opacity="0.3" />
 
 
-                <Button Classes="SideBar" Command="{Binding UpdateAppCommand}">
+                <Button Classes="SideBar" Command="{Binding UpdateAppCommand}" IsVisible="{Binding IsUpdateDownloaded}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
