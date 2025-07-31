@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RecipeApp.Services.Localization;
@@ -8,6 +6,8 @@ using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
 using RecipeApp.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace RecipeApp.ViewModels
 {
@@ -15,7 +15,7 @@ namespace RecipeApp.ViewModels
     {
         [ObservableProperty] private INavigationService _navService;
         [ObservableProperty] private ISearchService _searchService;
-        [ObservableProperty] private PageService _pageService;
+        [ObservableProperty] private IPageService _pageService;
 
         [ObservableProperty] private bool _isUpdateAvailable = false;
         public ILocalizationService L { get; }
@@ -24,7 +24,7 @@ namespace RecipeApp.ViewModels
             INavigationService navService,
             ILocalizationService localizationService,
             ISearchService searchService,
-            PageService pageService)
+            IPageService pageService)
         {
             _navService = navService;
             L = localizationService;

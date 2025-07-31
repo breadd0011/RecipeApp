@@ -1,9 +1,3 @@
-using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -17,9 +11,16 @@ using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
+using RecipeApp.Services.Theme;
 using RecipeApp.Utils;
 using RecipeApp.ViewModels;
 using RecipeApp.Views;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading;
 
 namespace RecipeApp
 {
@@ -32,7 +33,7 @@ namespace RecipeApp
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var collection = new ServiceCollection();
+            var services = new ServiceCollection();
 
             // Ensure config file exists before building configuration
             EnsureConfigFileExists();
@@ -43,36 +44,39 @@ namespace RecipeApp
                 .AddJsonFile("settings.json")
                 .Build();
 
-            // Create and bind AppSettings
             var appSettings = new AppSettings();
             config.GetSection("AppSettings").Bind(appSettings);
-            collection.AddSingleton(appSettings);
+            services.AddSingleton(appSettings);
 
             // Set culture
             Thread.CurrentThread.CurrentCulture = new CultureInfo(appSettings.Language);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(appSettings.Language);
 
             // Register other services
-            collection.AddSingleton<MainWindowViewModel>();
-            collection.AddSingleton<RecipeExplorerViewModel>();
-            collection.AddSingleton<FavoritesViewModel>();
-            collection.AddSingleton<SettingsViewModel>();
-            collection.AddSingleton<AboutViewModel>();
-            collection.AddTransient<AddRecipeViewModel>();
-            collection.AddTransient<OpenedRecipeViewModel>();
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<RecipeExplorerViewModel>();
+            services.AddSingleton<FavoritesViewModel>();
+            services.AddSingleton<SettingsViewModel>();
+            services.AddSingleton<AboutViewModel>();
+            services.AddTransient<AddRecipeViewModel>();
+            services.AddTransient<OpenedRecipeViewModel>();
 
-            collection.AddSingleton<ILocalizationService, LocalizationService>();
-            collection.AddSingleton<IRecipeDataService, RecipeDataService>();
-            collection.AddSingleton<INavigationService, NavigationService>();
-            collection.AddSingleton<ISearchService, SearchService>();
-            collection.AddSingleton<IFileService, FileService>();
-            collection.AddSingleton<PageService>();
+            services.AddSingleton<ILocalizationService, LocalizationService>();
+            services.AddSingleton<IRecipeDataService, RecipeDataService>();
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<ISearchService, SearchService>();
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IPageService, PageService>();
+            services.AddSingleton<IThemeService, ThemeService>();
 
-            collection.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+            services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
 
-            collection.AddDbContext<RecipeDbContext>();
+            services.AddDbContext<RecipeDbContext>();
 
-            var serviceProvider = collection.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Change the theme based on app settings
+            serviceProvider.GetRequiredService<IThemeService>().SwitchTheme(appSettings.IsDark);
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -108,7 +112,7 @@ namespace RecipeApp
             {
                 var defaultConfig = new
                 {
-                    AppSettings = new { Language = "en" }
+                    AppSettings = new { Language = "en", IsDark = true }
                 };
 
                 File.WriteAllText(

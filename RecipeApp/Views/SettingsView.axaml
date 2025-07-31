@@ -28,48 +28,66 @@
             </Grid>
         </Border>
 
-
-        <Grid
+        <StackPanel
             Grid.Row="1"
             Margin="10"
-            ColumnDefinitions="*,*">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                FontSize="18"
-                FontWeight="Bold"
-                Text="{Binding L[LanguageOption]}" />
-            <ComboBox
-                Grid.Column="1"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                HorizontalContentAlignment="Right"
-                ItemsSource="{Binding Languages}"
-                SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+            Orientation="Vertical">
+            <!--  Language Settings  -->
+            <Grid ColumnDefinitions="*,*">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Text="{Binding L[LanguageOption]}" />
+                <ComboBox
+                    Grid.Column="1"
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Right"
+                    ItemsSource="{Binding Languages}"
+                    SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
 
-                <Interaction.Behaviors>
-                    <EventTriggerBehavior EventName="SelectionChanged">
-                        <InvokeCommandAction Command="{Binding ChangeCultureCommand}" />
-                    </EventTriggerBehavior>
-                </Interaction.Behaviors>
+                    <Interaction.Behaviors>
+                        <EventTriggerBehavior EventName="SelectionChanged">
+                            <InvokeCommandAction Command="{Binding ChangeCultureCommand}" />
+                        </EventTriggerBehavior>
+                    </Interaction.Behaviors>
 
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <Image
-                                Width="30"
-                                Height="30"
-                                asyncImageLoader:ImageLoader.Source="{Binding FlagPath}" />
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </Grid>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Image
+                                    Width="30"
+                                    Height="30"
+                                    asyncImageLoader:ImageLoader.Source="{Binding FlagPath}" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+
+            <!--  Theme Settings  -->
+            <Grid ColumnDefinitions="*,*">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Text="{Binding L[ThemeOption]}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ChangeThemeCommand}"
+                    Content="SwitchTheme" />
+            </Grid>
+
+        </StackPanel>
+
 
 
 

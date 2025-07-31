@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RecipeApp.Models;
 using RecipeApp.Services;
@@ -12,13 +7,18 @@ using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace RecipeApp.ViewModels
 {
     public partial class RecipeExplorerViewModel : ViewModelBase
     {
         [ObservableProperty] private INavigationService _navService;
-        [ObservableProperty] private PageService _pageService;
+        [ObservableProperty] private IPageService _pageService;
 
         [ObservableProperty] private ObservableCollection<Recipe> _recipes;
         [ObservableProperty] private ObservableCollection<Recipe> _filteredRecipes;
@@ -38,7 +38,7 @@ namespace RecipeApp.ViewModels
 
         public RecipeExplorerViewModel(
             INavigationService navService,
-            PageService pageService,
+            IPageService pageService,
             FavoritesViewModel favoritesViewModel,
             IRecipeDataService recipeDataService,
             ILocalizationService localizationService,

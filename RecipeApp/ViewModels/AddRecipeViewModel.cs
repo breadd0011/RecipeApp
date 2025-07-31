@@ -1,9 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RecipeApp.Models;
 using RecipeApp.Services;
@@ -12,13 +7,18 @@ using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
 using RecipeApp.Services.Page;
 using RecipeApp.Utils;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace RecipeApp.ViewModels
 {
     public partial class AddRecipeViewModel : ViewModelBase
     {
         [ObservableProperty] private INavigationService _navService;
-        [ObservableProperty] private PageService _pageService;
+        [ObservableProperty] private IPageService _pageService;
         [ObservableProperty] private Recipe _recipeDraft;
         [ObservableProperty] private Ingredient _ingredientDraft;
         [ObservableProperty] private bool _isImgTipVisible;
@@ -31,7 +31,7 @@ namespace RecipeApp.ViewModels
 
         public AddRecipeViewModel(
             INavigationService navService,
-            PageService pageService,
+            IPageService pageService,
             IRecipeDataService recipeDataService,
             ILocalizationService localizationService,
             IFileService fileService,

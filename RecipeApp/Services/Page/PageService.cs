@@ -1,10 +1,10 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using RecipeApp.ViewModels;
+using System;
 
 namespace RecipeApp.Services.Page
 {
-    public partial class PageService : ObservableObject
+    public partial class PageService : ObservableObject, IPageService
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsExplorerActive))]
