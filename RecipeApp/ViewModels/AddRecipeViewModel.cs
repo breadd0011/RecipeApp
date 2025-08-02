@@ -1,22 +1,24 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RecipeApp.Models;
 using RecipeApp.Services;
 using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Services.Page;
 using RecipeApp.Utils;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace RecipeApp.ViewModels
 {
     public partial class AddRecipeViewModel : ViewModelBase
     {
         [ObservableProperty] private INavigationService _navService;
+        [ObservableProperty] private IPageService _pageService;
         [ObservableProperty] private Recipe _recipeDraft;
         [ObservableProperty] private Ingredient _ingredientDraft;
         [ObservableProperty] private bool _isImgTipVisible;
@@ -29,12 +31,14 @@ namespace RecipeApp.ViewModels
 
         public AddRecipeViewModel(
             INavigationService navService,
+            IPageService pageService,
             IRecipeDataService recipeDataService,
             ILocalizationService localizationService,
             IFileService fileService,
             Recipe? recipe = null)
         {
             _navService = navService;
+            _pageService = pageService;
             _recipeDataService = recipeDataService;
             L = localizationService;
             _fileService = fileService;
@@ -137,12 +141,14 @@ namespace RecipeApp.ViewModels
             }
 
             NavService.NavigateTo<RecipeExplorerViewModel>();
+            PageService.CurrentPageType = typeof(RecipeExplorerViewModel);
         }
 
         [RelayCommand]
         private void CancelRecipe()
         {
             NavService.NavigateTo<RecipeExplorerViewModel>();
+            PageService.CurrentPageType = typeof(RecipeExplorerViewModel);
         }
     }
 }

@@ -120,6 +120,9 @@
   <data name="AboutButton" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="AboutHeader" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="AddIngredientButton" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -129,8 +132,8 @@
   <data name="AddRecipeTitle" xml:space="preserve">
     <value>Add Recipe</value>
   </data>
-  <data name="AllRecipesTitle" xml:space="preserve">
-    <value>All Recipes</value>
+  <data name="AllRecipesHeader" xml:space="preserve">
+    <value>Recipes</value>
   </data>
   <data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
@@ -150,8 +153,8 @@
   <data name="FavoritesButton" xml:space="preserve">
     <value>Favorites</value>
   </data>
-  <data name="FavoritesTitle" xml:space="preserve">
-    <value>Favorite Recipes</value>
+  <data name="FavoritesHeader" xml:space="preserve">
+    <value>Favorites</value>
   </data>
   <data name="HomeButton" xml:space="preserve">
     <value>Recipes</value>
@@ -161,6 +164,9 @@
   </data>
   <data name="IngredientWatermark" xml:space="preserve">
     <value>Ingredient</value>
+  </data>
+  <data name="LanguageOption" xml:space="preserve">
+    <value>Language</value>
   </data>
   <data name="MakingSectionTitle" xml:space="preserve">
     <value>Making:</value>
@@ -199,6 +205,9 @@
     <value>Click here to select your image</value>
   </data>
   <data name="SettingsButton" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsHeader" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="UnitWatermark" xml:space="preserve">

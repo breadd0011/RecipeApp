@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RecipeApp.Models;
 using RecipeApp.Services;
 using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace RecipeApp.ViewModels
 {
     public partial class RecipeExplorerViewModel : ViewModelBase
     {
         [ObservableProperty] private INavigationService _navService;
+        [ObservableProperty] private IPageService _pageService;
 
         [ObservableProperty] private ObservableCollection<Recipe> _recipes;
         [ObservableProperty] private ObservableCollection<Recipe> _filteredRecipes;
@@ -36,6 +38,7 @@ namespace RecipeApp.ViewModels
 
         public RecipeExplorerViewModel(
             INavigationService navService,
+            IPageService pageService,
             FavoritesViewModel favoritesViewModel,
             IRecipeDataService recipeDataService,
             ILocalizationService localizationService,
@@ -43,6 +46,7 @@ namespace RecipeApp.ViewModels
             IFileService fileService)
         {
             _navService = navService;
+            _pageService = pageService;
             _favoritesViewModel = favoritesViewModel;
             _recipeDataService = recipeDataService;
             _searchService = searchService;
@@ -103,6 +107,7 @@ namespace RecipeApp.ViewModels
             if (recipe != null)
             {
                 NavService.NavigateTo(new OpenedRecipeViewModel(recipe, L));
+                PageService.CurrentPageType = typeof(OpenedRecipeViewModel);
             }
         }
 
@@ -163,7 +168,8 @@ namespace RecipeApp.ViewModels
         {
             if (recipe != null)
             {
-                NavService.NavigateTo(new AddRecipeViewModel(NavService, _recipeDataService, L, _fileService, recipe));
+                NavService.NavigateTo(new AddRecipeViewModel(NavService, _pageService, _recipeDataService, L, _fileService, recipe));
+                PageService.CurrentPageType = typeof(OpenedRecipeViewModel);
             }
         }
     }

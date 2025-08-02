@@ -1,9 +1,3 @@
-using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -15,10 +9,18 @@ using RecipeApp.Services;
 using RecipeApp.Services.FilePicker;
 using RecipeApp.Services.Localization;
 using RecipeApp.Services.Navigation;
+using RecipeApp.Services.Page;
 using RecipeApp.Services.Search;
+using RecipeApp.Services.Theme;
 using RecipeApp.Utils;
 using RecipeApp.ViewModels;
 using RecipeApp.Views;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading;
 
 namespace RecipeApp
 {
@@ -31,39 +33,53 @@ namespace RecipeApp
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var collection = new ServiceCollection();
-            collection.AddSingleton<MainWindowViewModel>();
-            collection.AddSingleton<RecipeExplorerViewModel>();
-            collection.AddSingleton<FavoritesViewModel>();
-            collection.AddTransient<AddRecipeViewModel>();
-            collection.AddTransient<OpenedRecipeViewModel>();
+            var services = new ServiceCollection();
 
-            collection.AddSingleton<ILocalizationService, LocalizationService>();
-            collection.AddSingleton<IRecipeDataService, RecipeDataService>();
-            collection.AddSingleton<INavigationService, NavigationService>();
-            collection.AddSingleton<ISearchService, SearchService>();
-            collection.AddSingleton<IFileService, FileService>();
-
-            collection.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
-
-            collection.AddDbContext<RecipeDbContext>();
-
-            var serviceProvider = collection.BuildServiceProvider();
-
+            // Ensure config file exists before building configuration
             EnsureConfigFileExists();
-            var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("settings.json")
-            .Build();
 
-            var defaultLang = config["AppSettings:DefaultLanguage"] ?? "en";
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(defaultLang);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(defaultLang);
+            // Build configuration
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("settings.json")
+                .Build();
+
+            var appSettings = new AppSettings();
+            config.GetSection("AppSettings").Bind(appSettings);
+            services.AddSingleton(appSettings);
+
+            // Set culture
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(appSettings.Language);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(appSettings.Language);
+
+            // Register other services
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<RecipeExplorerViewModel>();
+            services.AddSingleton<FavoritesViewModel>();
+            services.AddSingleton<SettingsViewModel>();
+            services.AddSingleton<AboutViewModel>();
+            services.AddTransient<AddRecipeViewModel>();
+            services.AddTransient<OpenedRecipeViewModel>();
+
+            services.AddSingleton<ILocalizationService, LocalizationService>();
+            services.AddSingleton<IRecipeDataService, RecipeDataService>();
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<ISearchService, SearchService>();
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IPageService, PageService>();
+            services.AddSingleton<IThemeService, ThemeService>();
+
+            services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+
+            services.AddDbContext<RecipeDbContext>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Change the theme based on app settings
+            serviceProvider.GetRequiredService<IThemeService>().SwitchTheme(appSettings.IsDark);
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
                 desktop.MainWindow = new MainWindow
                 {
@@ -96,7 +112,7 @@ namespace RecipeApp
             {
                 var defaultConfig = new
                 {
-                    AppSettings = new { DefaultLanguage = "en" }
+                    AppSettings = new { Language = "en", IsDark = true }
                 };
 
                 File.WriteAllText(

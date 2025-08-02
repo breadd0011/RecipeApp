@@ -26,7 +26,7 @@
         <converters:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmapConverter" />
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource BackgroundColor}" Classes.IsPopupOpen="{Binding IsPopupOpen}">
+    <Grid Background="Transparent" Classes.IsPopupOpen="{Binding IsPopupOpen}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
             <RowDefinition Height="*" />
@@ -39,7 +39,7 @@
                     VerticalAlignment="Center"
                     FontSize="24"
                     FontWeight="Bold"
-                    Text="{Binding L[AllRecipesTitle]}" />
+                    Text="{Binding L[AllRecipesHeader]}" />
             </Grid>
         </Border>
 
@@ -151,10 +151,14 @@
                                     </Grid.RowDefinitions>
 
                                     <!--  Recipe Image  -->
-                                    <Image
-                                        Grid.Row="0"
-                                        Source="{Binding ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
-                                        Stretch="UniformToFill" />
+                                    <Border Background="{DynamicResource PrimaryColor}">
+                                        <Image
+                                            Grid.Row="0"
+                                            ClipToBounds="True"
+                                            Source="{Binding ImageBytes, Converter={StaticResource ByteArrayToBitmapConverter}}"
+                                            Stretch="UniformToFill" />
+                                    </Border>
+
 
                                     <!--  Recipe Info  -->
                                     <Grid Grid.Row="1">

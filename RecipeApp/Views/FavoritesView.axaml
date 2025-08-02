@@ -16,7 +16,6 @@
     Design.Height="600"
     Design.Width="800">
 
-
     <UserControl.Resources>
         <converters:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmapConverter" />
     </UserControl.Resources>
@@ -34,7 +33,7 @@
                     VerticalAlignment="Center"
                     FontSize="24"
                     FontWeight="Bold"
-                    Text="{Binding L[FavoritesTitle]}" />
+                    Text="{Binding L[FavoritesHeader]}" />
             </Grid>
         </Border>
 

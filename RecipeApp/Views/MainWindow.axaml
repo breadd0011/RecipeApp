@@ -17,16 +17,22 @@
 
         <!--  SideBar  -->
         <Grid RowDefinitions="Auto,Auto,*">
+            <Grid.Background>
+                <ImageBrush
+                    Opacity="0.03"
+                    Source="/Assets/Images/seamlessbg.png"
+                    Stretch="UniformToFill" />
+            </Grid.Background>
 
 
             <!--  Top Section  -->
             <StackPanel Grid.Row="0" Margin="10,0,10,0">
-                <TextBlock
-                    Margin="30"
+                <Image
+                    Height="180"
                     HorizontalAlignment="Center"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Text="{Binding WelcomeText}" />
+                    RenderOptions.BitmapInterpolationMode="HighQuality"
+                    Source="/Assets/Images/header.png"
+                    Stretch="UniformToFill" />
 
                 <Separator
                     Height="1"
@@ -55,9 +61,10 @@
 
                 <!--  Add Button  -->
                 <Button
-                    Classes="SideBar"
+                    Classes="Sidebar"
                     Command="{Binding AddRecipeCommand}"
-                    CornerRadius="5">
+                    CornerRadius="5"
+                    IsEnabled="{Binding !PageService.IsAddRecipeActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -80,8 +87,10 @@
 
             <!--  Middle Section  -->
             <StackPanel Grid.Row="1" Margin="10,0,10,0">
-
-                <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToExplorerCommand}"
+                    IsEnabled="{Binding !PageService.IsExplorerActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -95,7 +104,10 @@
                     </StackPanel>
                 </Button>
 
-                <Button Classes="SideBar" Command="{Binding GoToFavoritesCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToFavoritesCommand}"
+                    IsEnabled="{Binding !PageService.IsFavoritesActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -108,33 +120,7 @@
                             Text="{Binding L[FavoritesButton]}" />
                     </StackPanel>
                 </Button>
-
             </StackPanel>
-
-            <!--<ComboBox
-                Grid.Row="1"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                HorizontalContentAlignment="Right"
-                ItemsSource="{Binding Languages}"
-                SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
-
-                <Interaction.Behaviors>
-                    <EventTriggerBehavior EventName="SelectionChanged">
-                        <InvokeCommandAction Command="{Binding ChangeCultureCommand}" />
-                    </EventTriggerBehavior>
-                </Interaction.Behaviors>
-
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <Image
-                            Width="30"
-                            Height="30"
-                            asyncImageLoader:ImageLoader.Source="{Binding FlagPath}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>-->
 
             <!--  Bottom Section  -->
             <StackPanel
@@ -148,7 +134,10 @@
                     Opacity="0.3" />
 
 
-                <Button Classes="SideBar" Command="{Binding UpdateAppCommand}" IsVisible="{Binding IsUpdateDownloaded}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding UpdateAppCommand}"
+                    IsVisible="{Binding IsUpdateAvailable}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
@@ -161,6 +150,7 @@
                             Text="{Binding L[UpdateButton]}" />
                     </StackPanel>
                 </Button>
+
 
 
                 <Button Classes="SideBar" Command="{Binding ChangeCultureCommand}">
@@ -177,7 +167,10 @@
                     </StackPanel>
                 </Button>
 
-                <Button Classes="SideBar" Command="{Binding GoToExplorerCommand}">
+                <Button
+                    Classes="Sidebar"
+                    Command="{Binding GoToAboutCommand}"
+                    IsEnabled="{Binding !PageService.IsAboutActive}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"
