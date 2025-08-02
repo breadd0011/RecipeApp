@@ -46,23 +46,21 @@ namespace RecipeApp.ViewModels
             {
                 try
                 {
-                    bool IsUpdateDownloaded = false;
-
                     await AutoUpdater.CheckForUpdatesAsync();
 
                     if (AutoUpdater.UpdateAvailable)
                     {
                         await AutoUpdater.DownloadUpdateAsync();
-                        IsUpdateDownloaded = true;
                     }
 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        if (IsUpdateDownloaded)
+                        if (AutoUpdater.UpdateAvailable)
                         {
-                            IsUpdateAvailable = true;
+                            IsUpdateDownloaded = true;
                         }
                     });
+
                 }
                 catch (Exception ex)
                 {

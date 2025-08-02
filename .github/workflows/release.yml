@@ -1,3 +1,4 @@
+
 name: Create Velopack Release
 
 on:
@@ -18,6 +19,7 @@ jobs:
         
       - name: Get Version from Tag
         id: get-version
+        shell: bash
         run: |
           version=${GITHUB_REF#refs/tags/v}
           echo "version=$version" >> $GITHUB_OUTPUT
@@ -26,14 +28,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          
+
       - name: Publish Application
+        shell: pwsh
         run: |
-          dotnet publish RecipeApp/RecipeApp.csproj \
-            -c Release \
-            -o publish \
-            -r win-x64 \
-            --self-contained true
+          dotnet publish RecipeApp/RecipeApp.csproj `
+          -c Release `
+          -o publish `
+          -r win-x64 `
+        
             
       - name: Create Velopack Release
         run: |

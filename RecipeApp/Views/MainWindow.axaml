@@ -152,10 +152,8 @@
                 </Button>
 
 
-                <Button
-                    Classes="Sidebar"
-                    Command="{Binding GoToSettingsCommand}"
-                    IsEnabled="{Binding !PageService.IsSettingsActive}">
+
+                <Button Classes="SideBar" Command="{Binding ChangeCultureCommand}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <material:MaterialIcon
                             Width="25"

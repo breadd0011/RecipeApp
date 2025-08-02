@@ -10,9 +10,9 @@
 	<Color x:Key="TertiaryColor">#33595e</Color>-->
 
     <!--<Color x:Key="PrimaryColor">#293035</Color>
-	<Color x:Key="BackgroundColor">#292926</Color>
-	<Color x:Key="TextColor">#fffefc</Color>
-	<Color x:Key="TertiaryColor">#ED5F44</Color>-->
+    <Color x:Key="BackgroundColor">#292926</Color>
+    <Color x:Key="TextColor">#fffefc</Color>
+    <Color x:Key="TertiaryColor">#ED5F44</Color>-->
 
     <!--<Color x:Key="PrimaryColor">#1F1F1F</Color>
 	<Color x:Key="BackgroundColor">#1C1C1C</Color>

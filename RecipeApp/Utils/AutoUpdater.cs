@@ -1,31 +1,43 @@
 ﻿using System.Threading.Tasks;
 using Velopack;
+using Velopack.Sources;
 
 namespace RecipeApp.Utils
 {
     public class AutoUpdater
     {
-        public static UpdateManager UpdateManager = new(Constants.GitHubRepoUrl);
+        public static UpdateManager UpdateManager = new UpdateManager(new GithubSource(Constants.GitHubRepoUrl, null, false));
         public static UpdateInfo? NewVersion;
-        public static bool UpdateAvailable => NewVersion != null;
+        public static bool UpdateAvailable = false;
 
         public static async Task CheckForUpdatesAsync()
         {
-            UpdateManager = new UpdateManager(Constants.GitHubRepoUrl);
-
             NewVersion = await UpdateManager.CheckForUpdatesAsync();
 
-            if (NewVersion == null) return;
+            if (NewVersion != null)
+            {
+                UpdateAvailable = true;
+            }
         }
 
         public static async Task DownloadUpdateAsync()
         {
-            if (NewVersion != null) await UpdateManager.DownloadUpdatesAsync(NewVersion);
+            if (UpdateAvailable)
+            {
+                await UpdateManager.DownloadUpdatesAsync(NewVersion!);
+            }
+
+            return;
         }
 
         public static void UpdateAndRestartApp()
         {
-            if (NewVersion != null) UpdateManager.ApplyUpdatesAndRestart(NewVersion);
+            if (UpdateAvailable)
+            {
+                UpdateManager.ApplyUpdatesAndRestart(NewVersion!);
+            }
+
+            return;
         }
     }
 }
